@@ -19,7 +19,8 @@
     <title>Welcome To The Developer Connector</title>
   </head>
   <body>
-    <nav class="navbar bg-darkphp     <h1>
+    <nav class="navbar bg-dark">
+      <h1>
         <a href="index.php"><i class="fas fa-code"></i> DevConnector</a>
       </h1>
       <ul>

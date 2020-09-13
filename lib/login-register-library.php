@@ -83,25 +83,6 @@ class DemoLib{
             exit($e->getMessage());
         }
     }
-
-    /*
-     * get User Details
-     *
-     * @param $user_id
-     * @return $mixed
-     * */    
-    public function UserDetails($user_id)
-    {
-        try {
-            $db = DB();
-            $query = $db->prepare("SELECT user_id, name, username, email FROM users WHERE user_id=:user_id");
-            $query->bindParam("user_id", $user_id, PDO::PARAM_STR);
-            $query->execute();
-            if ($query->rowCount() > 0) {
-                return $query->fetch(PDO::FETCH_OBJ);
-            }
-        } catch (PDOException $e) {
-            exit($e->getMessage());
-        }
-    }
+    
+    
 }

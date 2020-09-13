@@ -1,3 +1,17 @@
+<?php
+session_start();
+require __DIR__.'/lib/dashboard-library.php';
+$app = new Experience();
+$add_education_error_message = '';
+if (!empty($_POST['submit'])) {
+  $user_id = $_SESSION['user_id'];
+  $education_id = $app->addEducation($user_id, $_POST['school'], $_POST['degree'],$_POST['fieldofstudy'], $_POST['from'], $_POST['to'], $_POST['description'], $_POST['current']);
+  if ($education_id != null) {
+    header("Location: dashboard.php");
+  }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,7 +64,12 @@
         you have attended
       </p>
       <small>* = required field</small>
-      <form class="form">
+      <?php
+    if ($add_education_error_message != "") {
+      echo '<div class="alert alert-danger"><strong>Error: </strong> ' . $add_experience_error_message . '</div>';
+    }
+    ?>
+      <form class="form" method="post" action="add-education.php">
         <div class="form-group">
           <input
             type="text"
@@ -91,7 +110,7 @@
             placeholder="Program Description"
           ></textarea>
         </div>
-        <input type="submit" class="btn btn-primary my-1" />
+        <input type="submit" name="submit" class="btn btn-primary my-1" />
         <a class="btn btn-light my-1" href="dashboard.html">Go Back</a>
       </form>
     </section>

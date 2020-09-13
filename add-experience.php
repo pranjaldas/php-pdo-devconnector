@@ -1,6 +1,6 @@
 <?php
 session_start();
-require __DIR__.'/lib/experience-library.php';
+require __DIR__.'/lib/dashboard-library.php';
 $app = new Experience();
 $add_experience_error_message = '';
 if (!empty($_POST['submit'])) {
@@ -38,18 +38,18 @@ if (!empty($_POST['submit'])) {
 <body>
   <nav class="navbar bg-dark">
     <h1>
-      <a href="index.html"><i class="fas fa-code"></i> DevConnector</a>
+      <a href="index.php"><i class="fas fa-code"></i> DevConnector</a>
     </h1>
     <ul>
-      <li><a href="profiles.html">Developers</a></li>
-      <li><a href="posts.html">Posts</a></li>
+      <li><a href="profiles.php">Developers</a></li>
+      <li><a href="posts.php">Posts</a></li>
       <li>
         |
-        <a href="dashboard.html" title="Dashboard"><i class="fas fa-user"></i>
+        <a href="dashboard.php" title="Dashboard"><i class="fas fa-user"></i>
           <span class="hide-sm">Dashboard</span></a>
       </li>
       <li>
-        <a href="login.html" title="Logout">
+        <a href="login.php" title="Logout">
           <i class="fas fa-sign-out-alt"></i>
           <span class="hide-sm">Logout</span></a>
       </li>

@@ -3,14 +3,9 @@ session_start();
 if (!(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')) {
   header("Location: login.php");
 }
-require __DIR__ . '/lib/experience-library.php';
+require __DIR__ . '/lib/dashboard-library.php';
 $app = new Experience();
-
-if(isset($_GET['experience_id'])) {
-  $app->deleteExperiences($_GET['experience_id']);
-  echo "<script>alert('Record Updated successfully');</script>";
-}
-
+$user = $app->UserDetails($_SESSION['user_id']); // get user details
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +35,7 @@ if(isset($_GET['experience_id'])) {
           <span class="hide-sm">Dashboard</span></a>
       </li>
       <li>
-        <a href="logout.php" title="Logout" onclick="return logoutConfirm()">
+        <a href="action-logout.php" title="Logout" onclick="return logoutConfirm()">
           <i class="fas fa-sign-out-alt"></i>
           <span class="hide-sm">Logout</span></a>
       </li>
@@ -50,7 +45,7 @@ if(isset($_GET['experience_id'])) {
     <h1 class="large text-primary">
       Dashboard
     </h1>
-    <p class="lead"><i class="fas fa-user"></i> Welcome John Doe</p>
+    <p class="lead"><i class="fas fa-user"></i> Welcome <?php echo $user->name ?></p>
     <div class="dash-buttons">
       <a href="edit-profile.php" class="btn btn-light"><i class="fas fa-user-circle text-primary"></i> Edit Profile</a>
       <a href="add-experience.php" class="btn btn-light"><i class="fab fa-black-tie text-primary"></i> Add Experience</a>
@@ -69,15 +64,14 @@ if(isset($_GET['experience_id'])) {
         </tr>
       </thead>
       <tbody>
-        <?php
-
+      <?php
         $data = $app->readExperiences($_SESSION['user_id']);
         foreach ($data as $key => $value) {
           echo '<tr>'
-            . '<td>' . $value["company"] . '</td>' .
-            '<td>' . $value["job_title"] . '</td>' .
-            '<td>' . $value['start_date'] . " - " . $value['end_date'] . '</td>' .
-            '<td>' . '<a href="dashboard.php?experience_id=' . $value['experience_id'] . '">' . '<button class="btn btn-danger" onclick="return deleteConfirm()">' . "Delete" . '</button>' . '</a>' . '</td>' .
+            . '<td>' .$value["company"] . '</td>' .
+            '<td>' .$value["job_title"] . '</td>' .
+            '<td>' .$value['start_date'] . " - " . $value['end_date'] . '</td>' .
+            '<td>' .'<a href="action-delete-experience.php?experience_id='.$value['experience_id'].'">'.'<button name="delete" class="btn btn-danger" onclick="return deleteConfirm()">' . "Delete" . '</button>' . '</a>' . '</td>' .
             '</tr>';
         }
         ?>
@@ -95,18 +89,17 @@ if(isset($_GET['experience_id'])) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Northern Essex</td>
-          <td class="hide-sm">Associates</td>
-          <td class="hide-sm">
-            02-03-2007 - 01-02-2009
-          </td>
-          <td>
-            <button class="btn btn-danger">
-              Delete
-            </button>
-          </td>
-        </tr>
+      <?php
+        $data = $app->readEducation($_SESSION['user_id']);
+        foreach ($data as $key => $value) {
+          echo '<tr>'
+            . '<td>' . $value["school"] . '</td>' .
+            '<td>' . $value["digree"] . '</td>' .
+            '<td>' . $value['start_date'] . " - " . $value['end_date'] . '</td>' .
+            '<td>' . '<a href="action-delete-education.php?education_id=' . $value['education_id'] . '">' . '<button name="delete" class="btn btn-danger" onclick="return deleteConfirm()">' . "Delete" . '</button>' . '</a>' . '</td>' .
+            '</tr>';
+        }
+        ?>
       </tbody>
     </table>
 
@@ -131,6 +124,7 @@ if(isset($_GET['experience_id'])) {
       return false;
     }
   }
+
   function logoutConfirm() {
     var x = "Are you sure want to logout?";
     if (confirm(x)) {

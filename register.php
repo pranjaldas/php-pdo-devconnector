@@ -22,7 +22,7 @@ if (!empty($_POST['submit'])) {
     $user_id = $app->Register($_POST['name'], $_POST['email'], $_POST['username'], $_POST['password']);
     // set session and redirect user to the profile page
     $_SESSION['user_id'] = $user_id;
-    header("Location: profile.php");
+    header("Location: create-profile.php");
   }
 }
 

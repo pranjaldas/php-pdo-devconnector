@@ -5,7 +5,7 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')) {
 }
 require __DIR__ . '/lib/profile-library.php';
 $app = new Profile();
-if (!empty($_POST['submit'])) {
+if (!empty($_PUT['submit'])) {
   $user_id = $_SESSION['user_id'];
   $profile_id = $app->createProfile($user_id, $_POST['status'], $_POST['company'],$_POST['website'], $_POST['location'], $_POST['skills'], $_POST['githubusername'], $_POST['bio'], $_POST['twitter'],$_POST['facebook'],$_POST['youtube'],$_POST['linkedin'],$_POST['instagram']);
   if ($profile_id != null) {
@@ -58,17 +58,22 @@ if (!empty($_POST['submit'])) {
     </nav>
     <section class="container">
       <h1 class="large text-primary">
-        Create Your Profile
+        Edit your Profile
       </h1>
       <p class="lead">
         <i class="fas fa-user"></i> Let's get some information to make your
         profile stand out
       </p>
       <small>* = required field</small>
-      <form class="form" method="post" action="create-profile.php">
+      <?php
+      print_r($app->readProfile($_SESSION['user_id']));
+      $profile=$app->readProfile($_SESSION['user_id']);
+      echo "Profile ".$profile->profession.$profile->bio
+      ?>
+      <form class="form">
         <div class="form-group">
-          <select name="status" required>
-            <option value="">* Select Professional Status</option>
+          <select name="status">
+            <option value="<?php echo $profile->profession ?>">* Select Professional Status</option>
             <option value="Developer">Developer</option>
             <option value="Junior Developer">Junior Developer</option>
             <option value="Senior Developer">Senior Developer</option>
@@ -83,25 +88,25 @@ if (!empty($_POST['submit'])) {
           >
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Company" name="company" required/>
+          <input type="text" placeholder="Company" name="company" value="<?php echo $profile->company ?>"/>
           <small class="form-text"
             >Could be your own company or one you work for</small
           >
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Website" name="website" required/>
+          <input type="text" placeholder="Website" name="website" value="<?php echo $profile->website ?>" />
           <small class="form-text"
             >Could be your own or a company website</small
           >
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Location" name="location" required/>
+          <input type="text" placeholder="Location" name="location" value="<?php echo $profile->location ?>"/>
           <small class="form-text"
             >City & state suggested (eg. Boston, MA)</small
           >
         </div>
         <div class="form-group">
-          <input type="text" placeholder="* Skills" name="skills" required/>
+          <input type="text" placeholder="* Skills" name="skills" value="<?php echo $profile->skills ?>" />
           <small class="form-text"
             >Please use comma separated values (eg.
             HTML,CSS,JavaScript,PHP)</small
@@ -112,6 +117,7 @@ if (!empty($_POST['submit'])) {
             type="text"
             placeholder="Github Username"
             name="githubusername"
+            value="<?php echo $profile->githubusername ?>"
           />
           <small class="form-text"
             >If you want your latest repos and a Github link, include your
@@ -119,7 +125,7 @@ if (!empty($_POST['submit'])) {
           >
         </div>
         <div class="form-group">
-          <textarea placeholder="A short bio of yourself" name="bio" required></textarea>
+          <textarea placeholder="A short bio of yourself" name="bio" ><?php echo $profile->bio ?></textarea>
           <small class="form-text">Tell us a little about yourself</small>
         </div>
 
@@ -132,29 +138,29 @@ if (!empty($_POST['submit'])) {
 
         <div class="form-group social-input">
           <i class="fab fa-twitter fa-2x"></i>
-          <input type="text" placeholder="Twitter URL" name="twitter" />
+          <input type="text" placeholder="Twitter URL" name="twitter" value="<?php echo $profile->twitter ?>"/>
         </div>
 
         <div class="form-group social-input">
           <i class="fab fa-facebook fa-2x"></i>
-          <input type="text" placeholder="Facebook URL" name="facebook" />
+          <input type="text" placeholder="Facebook URL" name="facebook" value="<?php echo $profile->facebook ?>"/>
         </div>
 
         <div class="form-group social-input">
           <i class="fab fa-youtube fa-2x"></i>
-          <input type="text" placeholder="YouTube URL" name="youtube" />
+          <input type="text" placeholder="YouTube URL" name="youtube" value="<?php echo $profile->youtube ?>"/>
         </div>
 
         <div class="form-group social-input">
           <i class="fab fa-linkedin fa-2x"></i>
-          <input type="text" placeholder="Linkedin URL" name="linkedin" />
+          <input type="text" placeholder="Linkedin URL" name="linkedin" value="<?php echo $profile->linkedin ?>"/>
         </div>
 
         <div class="form-group social-input">
           <i class="fab fa-instagram fa-2x"></i>
-          <input type="text" placeholder="Instagram URL" name="instagram" />
+          <input type="text" placeholder="Instagram URL" name="instagram" value="<?php echo $profile->instagram ?>"/>
         </div>
-        <input type="submit" name="submit" class="btn btn-primary my-1" />
+        <input type="submit" class="btn btn-primary my-1" />
         <a class="btn btn-light my-1" href="dashboard.html">Go Back</a>
       </form>
     </section>
