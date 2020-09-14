@@ -18,12 +18,7 @@ class DemoLib{
         }
     }
 
-    /*
-     * Check Username
-     *
-     * @param $username
-     * @return boolean
-     * */    
+       
     public function isUsername($username)
     {
         try {
@@ -57,13 +52,7 @@ class DemoLib{
             exit($e->getMessage());
         }
     }
-
-    /*
-     * Login
-     *
-     * @param $username, $password
-     * @return $mixed
-     * */    
+   
     public function Login($username, $password)
     {
         try {
