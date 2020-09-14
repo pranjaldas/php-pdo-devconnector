@@ -48,7 +48,7 @@ if (!empty($_POST['submit'])) {
           >
         </li>
         <li>
-          <a href="login.php" title="Logout">
+        <a href="action-logout.php" title="Logout" onclick="return logoutConfirm()">
             <i class="fas fa-sign-out-alt"></i>
             <span class="hide-sm">Logout</span></a
           >
@@ -116,3 +116,13 @@ if (!empty($_POST['submit'])) {
     </section>
   </body>
 </html>
+<script>
+  function logoutConfirm() {
+    var x = "Are you sure want to logout?";
+    if (confirm(x)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+</script>

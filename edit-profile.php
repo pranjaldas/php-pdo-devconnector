@@ -5,18 +5,10 @@ if (!(isset($_SESSION['user_id']) && $_SESSION['user_id'] != '')) {
 }
 require __DIR__ . '/lib/profile-library.php';
 $app = new Profile();
-if (!empty($_PUT['submit'])) {
-  $user_id = $_SESSION['user_id'];
-  $profile_id = $app->createProfile($user_id, $_POST['status'], $_POST['company'],$_POST['website'], $_POST['location'], $_POST['skills'], $_POST['githubusername'], $_POST['bio'], $_POST['twitter'],$_POST['facebook'],$_POST['youtube'],$_POST['linkedin'],$_POST['instagram']);
-  if ($profile_id != null) {
-    header("Location: dashboard.php");
-  }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+  <head>U   <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link
@@ -49,7 +41,7 @@ if (!empty($_PUT['submit'])) {
           >
         </li>
         <li>
-          <a href="login.php" title="Logout">
+        <a href="action-logout.php" title="Logout" onclick="return logoutConfirm()">
             <i class="fas fa-sign-out-alt"></i>
             <span class="hide-sm">Logout</span></a
           >
@@ -66,14 +58,19 @@ if (!empty($_PUT['submit'])) {
       </p>
       <small>* = required field</small>
       <?php
-      print_r($app->readProfile($_SESSION['user_id']));
-      $profile=$app->readProfile($_SESSION['user_id']);
-      echo "Profile ".$profile->profession.$profile->bio
+       $profile=$app->readProfile($_SESSION['user_id']);
+       if (!empty($_POST['submit'])) {
+        $user_id = $_SESSION['user_id'];
+        $result = $app->editProfile($user_id, $_POST['status'], $_POST['company'],$_POST['website'], $_POST['location'], $_POST['skills'], $_POST['githubusername'], $_POST['bio'], $_POST['twitter'],$_POST['facebook'],$_POST['youtube'],$_POST['linkedin'],$_POST['instagram']);
+        if($result==true){
+          header("Location: dashboard.php");
+        }
+      }
       ?>
-      <form class="form">
+      <form class="form" method="post" action="edit-profile.php">
         <div class="form-group">
           <select name="status">
-            <option value="<?php echo $profile->profession ?>">* Select Professional Status</option>
+            <option value="">* Select Professional Status</option>
             <option value="Developer">Developer</option>
             <option value="Junior Developer">Junior Developer</option>
             <option value="Senior Developer">Senior Developer</option>
@@ -160,9 +157,19 @@ if (!empty($_PUT['submit'])) {
           <i class="fab fa-instagram fa-2x"></i>
           <input type="text" placeholder="Instagram URL" name="instagram" value="<?php echo $profile->instagram ?>"/>
         </div>
-        <input type="submit" class="btn btn-primary my-1" />
+        <input type="submit" name="submit" class="btn btn-primary my-1" />
         <a class="btn btn-light my-1" href="dashboard.html">Go Back</a>
       </form>
     </section>
   </body>
 </html>
+<script>
+  function logoutConfirm() {
+    var x = "Are you sure want to logout?";
+    if (confirm(x)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+</script>

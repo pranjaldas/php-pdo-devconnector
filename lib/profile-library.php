@@ -4,7 +4,7 @@ class Profile{
     public function createProfile($user_id,$profession,$company,$website,$location,$skills,$githubusername,$bio,$twitter,$facebook,$youtube,$linkedin,$instagram){
         try{
             $db = DB();
-            $query = $db->prepare("INSERT INTO user_profile(user_id,profession,company,website,location,skills,githubusername,bio,twitter,facebook,youtube,linkedin,instagram) VALUES(:user_id,:profession,:company,:website,:location,:skills,:githubusername,:bio,:twitter,:facebook,:youtube,:linkedin,:instagram)");
+            $query = $db->prepare("INSERT INTO profile(user_id,profession,company,website,location,skills,githubusername,bio,twitter,facebook,youtube,linkedin,instagram) VALUES(:user_id,:profession,:company,:website,:location,:skills,:githubusername,:bio,:twitter,:facebook,:youtube,:linkedin,:instagram)");
             $query->bindParam("user_id", $user_id, PDO::PARAM_INT);
             $query->bindParam("profession", $profession, PDO::PARAM_STR);
             $query->bindParam("company", $company, PDO::PARAM_STR);
@@ -30,7 +30,7 @@ class Profile{
     public function readProfile($user_id){
         try{
             $db= DB();
-            $query =$db->prepare("SELECT * FROM user_profile WHERE user_id=:user_id");
+            $query =$db->prepare("SELECT * FROM profile WHERE user_id=:user_id");
             $query->bindValue("user_id",$user_id, PDO::PARAM_INT);
             $query->execute();
             if ($query->rowCount() > 0) {
@@ -42,5 +42,36 @@ class Profile{
             exit($e->getMessage());
         }
     }
+    public function editProfile($user_id,$profession,$company,$website,$location,$skills,$githubusername,$bio,$twitter,$facebook,$youtube,$linkedin,$instagram){
+        try{
+            $db=DB();
+            $query=$db->prepare("UPDATE profile SET profession=:profession,company=:company,website=:website,location=:location, skills=:skills,githubusername=:githubusername,bio=:bio,twitter=:twitter,facebook=:facebook,youtube=:youtube,linkedin=:linkedin,instagram=:instagram WHERE user_id=:user_id");
+            $query->bindParam("user_id", $user_id, PDO::PARAM_INT);
+            $query->bindParam("profession", $profession, PDO::PARAM_STR);
+            $query->bindParam("company", $company, PDO::PARAM_STR);
+            $query->bindParam("website", $website, PDO::PARAM_STR);
+            $query->bindParam("location", $location, PDO::PARAM_STR);
+            $query->bindParam("skills", $skills, PDO::PARAM_STR);
+            $query->bindParam("githubusername", $githubusername, PDO::PARAM_STR);
+            $query->bindParam("bio", $bio, PDO::PARAM_STR);
+            $query->bindParam("twitter", $twitter, PDO::PARAM_STR);
+            $query->bindParam("facebook", $facebook, PDO::PARAM_STR);
+            $query->bindParam("youtube", $youtube, PDO::PARAM_STR);
+            $query->bindParam("linkedin", $linkedin, PDO::PARAM_STR);
+            $query->bindParam("instagram", $instagram, PDO::PARAM_STR);
+            $query->execute();
+            if($query){
+                return true;
+            }
+            else{
+                false;
+            }
+
+        }catch(PDOException $e){
+            echo "Error is :" .$e->getMessage();
+            exit($e->getMessage());
+        }
+    }
+    
 }
 ?>
